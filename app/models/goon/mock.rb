@@ -1,5 +1,5 @@
-class Henchman::Mock < Henchman
-  default_action :run
+class Goon::Mock < Goon
+  default_action :pass
   
   attribute :message, :type => String
   

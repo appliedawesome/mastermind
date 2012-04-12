@@ -1,4 +1,4 @@
 Mastermind::Config.setup do |config|
-  config.henchman :mock, Henchman::Mock
-  config.henchman :ec2_server, Henchman::Server::EC2
+  config.goon :mock, Goon::Mock
+  config.goon :ec2_server, Goon::Server::EC2
 end

@@ -31,18 +31,18 @@ Don't execute commands at once, split jobs into tasks and send them to actors af
 
 ## Terminology
 
-* Henchman (Henchman.run, Henchman.fire)
-* Henchman
+* Goon (Goon.run, Goon.fire)
+* Goon
 
 
 
-### Henchman
+### Goon
 
-A henchman is hired gun. He carries out the task delegated to him by the plot.
+A goon is hired gun. He carries out the task delegated to him by the heist.
 
- of an object in your system, be it a server instance, an IP address, or even a Chef client. A henchman has an associated Provider, which contains methods that define various actions that can be performed on a henchman
+ of an object in your system, be it a server instance, an IP address, or even a Chef client. A goon has an associated Provider, which contains methods that define various actions that can be performed on a goon
 
-Every henchman has two attributes: a name and an action. The name is used as the identifier of the henchman, unique to the task. The action is a reference to the method that will be called on the henchman's provider. to the
+Every goon has two attributes: a name and an action. The name is used as the identifier of the goon, unique to the task. The action is a reference to the method that will be called on the goon's provider. to the
 
 ### P
 ### Project

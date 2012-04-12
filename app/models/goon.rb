@@ -1,4 +1,4 @@
-class Henchman
+class Goon
   include ActiveAttr::Model
   include ActiveAttr::TypecastedAttributes
   
@@ -6,7 +6,7 @@ class Henchman
   
   attribute :action, :type => String
   attribute :name, :type => String
-  
+  attribute :state, :type => String, :default => 'pending'
   validates_presence_of :name
   
   def self.allowed_actions
@@ -14,20 +14,20 @@ class Henchman
   end
   
   def self.from_hash(hash)
-    henchman = find_by_name(hash["type"])
-    result = henchman.new(hash)
+    goon = find_by_name(hash["type"])
+    result = goon.new(hash)
     return result
   end
   
   def self.from_json(json)
     hash = Yajl.load(json)
-    henchman = find_by_name(hash["type"])
-    result = henchman.new(hash)
+    goon = find_by_name(hash["type"])
+    result = goon.new(hash)
     return result
   end
   
   def self.find_by_name(name)
-    Mastermind::Lair.henchmen[name]
+    Mastermind::Lineup.goons[name]
   end
   
   def self.type(type=nil)
@@ -46,12 +46,12 @@ class Henchman
   
   default_action :nothing
   
-  def self.dsl_method(name, henchman, &block)
-    new_henchman = henchman.new
-    new_henchman.name name
-    new_henchman.action (new_henchman.action || new_henchman.default_action)
-    new_henchman.instance_eval(&block)
-    tasks << new_henchman
+  def self.dsl_method(name, goon, &block)
+    new_goon = goon.new
+    new_goon.name name
+    new_goon.action (new_goon.action || new_goon.default_action)
+    new_goon.instance_eval(&block)
+    tasks << new_goon
   end
     
   def self.action(name, options={}, &block)
@@ -99,14 +99,11 @@ class Henchman
   end
 
   def compile
-    # We look for attributes that might be interpolating values from the plot's data or other resources. For example,
+    # We look for attributes that might be interpolating values from the heist's data or other resources. For example,
     # "{{data:server.hostname}}"
     attributes.each do |key, value|
       match = value.match(/{{(.*)}}/)
       # if match
-        
-        
-        
     end
   end
   

@@ -1,6 +1,6 @@
 require 'fog'
 
-class Henchman::Server::EC2 < Henchman
+class Goon::Server::EC2 < Goon
   default_action :create
   
   attribute :aws_access_key_id, :type => String, :required => true

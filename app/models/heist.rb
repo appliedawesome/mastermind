@@ -1,4 +1,4 @@
-class Plot # < ActiveRecord::Base
+class Heist # < ActiveRecord::Base
   include Mastermind::Helpers
   include ActiveAttr::Model
 

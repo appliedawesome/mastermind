@@ -1,9 +1,9 @@
 module Mastermind
-  class Lair
-    @henchmen = Hash.new.with_indifferent_access
+  class Lineup
+    @goons = Hash.new.with_indifferent_access
 
     class << self
-      attr_accessor :henchmen
+      attr_accessor :goons
     end
 
   end

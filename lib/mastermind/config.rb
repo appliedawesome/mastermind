@@ -6,8 +6,8 @@ module Mastermind::Config
     self
   end
   
-  def henchman(type, henchman_class)
-    Mastermind::Lair.henchmen[type] = henchman_class
-    henchman_class.type type
+  def goon(type, goon_class)
+    Mastermind::Lineup.goons[type] = goon_class
+    goon_class.type type
   end
 end
