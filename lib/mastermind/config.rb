@@ -6,8 +6,8 @@ module Mastermind::Config
     self
   end
   
-  def goon(type, goon_class)
-    Mastermind::Lineup.goons[type] = goon_class
-    goon_class.type type
+  def target(type, target_class)
+    Mastermind::HitList.targets[type] = target_class
+    target_class.type type
   end
 end

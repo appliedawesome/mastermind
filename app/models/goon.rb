@@ -2,139 +2,34 @@ class Goon
   include ActiveAttr::Model
   include ActiveAttr::TypecastedAttributes
   
-  self.include_root_in_json = false
+  attribute :job, :type => Object
+  attribute :heist, :type => Object
   
-  attribute :action, :type => String
-  attribute :name, :type => String
-  attribute :state, :type => String, :default => 'pending'
-  validates_presence_of :name
-  
-  def self.allowed_actions
-    @allowed_actions ||= [ 'nothing' ]
+  # What to do before we execute a job
+  def setup
   end
   
-  def self.from_hash(hash)
-    goon = find_by_name(hash["type"])
-    result = goon.new(hash)
-    return result
-  end
-  
-  def self.from_json(json)
-    hash = Yajl.load(json)
-    goon = find_by_name(hash["type"])
-    result = goon.new(hash)
-    return result
-  end
-  
-  def self.find_by_name(name)
-    Mastermind::Lineup.goons[name]
-  end
-  
-  def self.type(type=nil)
-    @type = type.to_s if !type.nil?
-    attribute :type, :type => String, :default => @type
-    return @type
-  end
-  
-  type :base
-  
-  def self.default_action(name=nil)
-    @default_action = name.to_s if !name.nil?
-    attribute :default_action, :type => String, :default => @default_action
-    return @default_action
-  end
-  
-  default_action :nothing
-  
-  def self.dsl_method(name, goon, &block)
-    new_goon = goon.new
-    new_goon.name name
-    new_goon.action (new_goon.action || new_goon.default_action)
-    new_goon.instance_eval(&block)
-    tasks << new_goon
-  end
-    
-  def self.action(name, options={}, &block)
-    name = name.to_s
-    allowed_actions.push(name) unless allowed_actions.include?(name)
-    
-    define_method(name) do
-      requires options[:requires] if options[:requires]
-      Mastermind::Log.debug "Executing #{name} for #{to_s}."
-      instance_eval(&block)
-      self
-    end
-  end
-  
-  def initialize(attrs={})
-    attrs.each_pair do |key, value|
-      define_method key do |value|
-        send("#{key}=", value)
-      end
-    end
-    super(attrs)
-  end
-  
-  def nothing
-    Mastermind::Log.debug "Doing nothing."
-    return true
-  end
-  
-  def requires(*args)
-    missing = []
-    args.flatten.each do |arg|
-      unless self.send("#{arg}") || self.attributes.has_key?(arg)
-        missing << arg
-      end
-    end
-    if missing.length == 1
-      raise ArgumentError, "#{missing.first} is required for this operation."
-    elsif missing.any?
-      raise ArgumentError, "#{missing[0...-1].join(", ")} and #{missing[-1]} are required for this operation."
-    end
-  end
-
-  def to_s
-    "#{type}[#{name}]"
-  end
-
-  def compile
-    # We look for attributes that might be interpolating values from the heist's data or other resources. For example,
-    # "{{data:server.hostname}}"
-    attributes.each do |key, value|
-      match = value.match(/{{(.*)}}/)
-      # if match
-    end
-  end
-  
+  # How we execute a job
   def execute
-    action_to_execute = (self.action || self.default_action)
-    unless self.class.allowed_actions.include?(action_to_execute)
-      raise ArgumentError, "'#{action_to_execute}' is not a valid action."
-    end
-    
-    if self.valid?
-      begin
-        self.send(action_to_execute)
-        Mastermind::Log.debug "Action succeeded."
-        self
-      rescue => e
-        Mastermind::Log.error "#{e.message}\n#{e.backtrace.join("\n")}"
-        raise e.exception
-      end
-    else
-      Mastermind::Log.error self.errors.full_messages.join(", ")
-      raise ArgumentError, self.errors.full_messages.join(", ")
-    end
+    job.execute
   end
   
+  # What to do after we execute a job
   def report
+    report_to_heist
   end
   
-  # Fake the save process so FactoryGirl won't poop itself
-  def save!
-    true
+  def initialize_target
+    target = Mastermind::HitList.targets[dossier[:target][:name]].new(dossier[:target])
   end
   
-  
+  def report_to_heist
+    
+  end
 end
+
+# job = Job.new(...)
+# goon = Goon.new(job)
+# goon.setup
+# goon.execute
+# goon.report

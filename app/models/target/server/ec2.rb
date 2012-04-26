@@ -1,7 +1,7 @@
 require 'fog'
 
-class Goon::Server::EC2 < Goon
-  default_action :create
+class Target::Server::EC2 < Target
+  # default_action :create
   
   attribute :aws_access_key_id, :type => String, :required => true
   attribute :aws_secret_access_key, :type => String, :required => true
@@ -46,9 +46,7 @@ class Goon::Server::EC2 < Goon
     )
   end
   
-  action :create, 
-         :requires => [:image_id, :flavor_id, :key_name, :availability_zone, :groups] do
-    
+  action :create, :needs => [:image_id, :flavor_id, :key_name, :availability_zone, :groups] do
     Mastermind::Log.info "Creating EC2 server"
     
     server = connection.servers.create(
@@ -63,7 +61,7 @@ class Goon::Server::EC2 < Goon
     attributes = server.attributes
   end
 
-  action :destroy, :requires => :instance_id do
+  action :destroy, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.destroy
     Mastermind::Log.info "Destroying EC2 server #{instance_id}"
@@ -71,7 +69,7 @@ class Goon::Server::EC2 < Goon
     attributes = server.attributes
   end
 
-  action :stop, :requires => :instance_id do
+  action :stop, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.stop
     Mastermind::Log.info "Stopping EC2 server #{instance_id}"
@@ -79,7 +77,7 @@ class Goon::Server::EC2 < Goon
     attributes = server.attributes
   end
 
-  action :start, :requires => :instance_id do
+  action :start, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.start
     Mastermind::Log.info "Starting EC2 server #{instance_id}"
@@ -87,7 +85,7 @@ class Goon::Server::EC2 < Goon
     attributes = server.attributes
   end
   
-  action :restart, :requires => :instance_id do
+  action :restart, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.stop
     Mastermind::Log.info "Stopping EC2 server #{instance_id}"

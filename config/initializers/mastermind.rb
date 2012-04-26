@@ -1,4 +1,4 @@
 Mastermind::Config.setup do |config|
-  config.goon :mock, Goon::Mock
-  config.goon :ec2_server, Goon::Server::EC2
+  config.target :mock, Target::Mock
+  config.target :ec2_server, Target::Server::EC2
 end

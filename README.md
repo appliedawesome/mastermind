@@ -31,18 +31,34 @@ Don't execute commands at once, split jobs into tasks and send them to actors af
 
 ## Terminology
 
-* Goon (Goon.run, Goon.fire)
-* Goon
+* Heist - the plan of action, a list of jobs. Hires goons to execute jobs on targets
+* Goon - the main actor, carries out a job on the target. Jobs can be:
+** observation
+** execution
+** and more!
+** job
+** target
+** target attributes
 
-
+** available actions are set on the target. in other words, the target will define what happens when an action is performed on it.
+* Job - the details of what the goon should do to the target.
+** target class
+** what action to perform
+** predefined specific attributes the target needs
+* Target - the resource upon which we execute an action
 
 ### Goon
 
-A goon is hired gun. He carries out the task delegated to him by the heist.
+A goon is hired gun. He carries out the job delegated to him by the heist. He doesn't know about the actions of other goons. All he knows is what he is told to do as laid out by the heist. As soon as the goon reports back to the heist, he is killed off.
 
- of an object in your system, be it a server instance, an IP address, or even a Chef client. A goon has an associated Provider, which contains methods that define various actions that can be performed on a goon
+In technical terms: A goon 
 
-Every goon has two attributes: a name and an action. The name is used as the identifier of the goon, unique to the task. The action is a reference to the method that will be called on the goon's provider. to the
+
+
+
+ of an object in your system, be it a server instance, an IP address, or even a Chef client. A target has an associated Provider, which contains methods that define various actions that can be performed on a target
+
+Every target has two attributes: a name and an action. The name is used as the identifier of the target, unique to the task. The action is a reference to the method that will be called on the target's provider. to the
 
 ### P
 ### Project
