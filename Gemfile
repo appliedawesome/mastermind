@@ -13,7 +13,7 @@ gem 'jquery-rails'
 gem 'cabin', '0.4.4'
 gem 'yajl-ruby', '>= 1.1.0'
 
-gem 'spice'
+gem 'spice', git: 'https://github.com/danryan/spice'
 gem 'fog', '>= 1.1.2'
 
 # Gems used only for assets and not required
