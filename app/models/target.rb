@@ -67,15 +67,6 @@ class Target
   def to_s
     "target[#{type}]"
   end
-
-  def compile
-    # We look for attributes that might be interpolating values from the heist's data or other resources. For example,
-    # "{{data:server.hostname}}"
-    attributes.each do |key, value|
-      match = value.match(/{{(.*)}}/)
-      # if match
-    end
-  end
     
   def execute(action_to_execute)
     action_to_execute = action_to_execute.to_sym
@@ -96,9 +87,6 @@ class Target
     else
       return false
     end
-  end
-  
-  def report
   end
   
   # Fake the save process so FactoryGirl won't poop itself
