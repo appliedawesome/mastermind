@@ -10,7 +10,7 @@ gem 'active_attr', '>= 0.5.0.alpha2'
 gem 'slim-rails', '>= 1.0.3'
 gem 'simple_form', '>= 2.0.0'
 gem 'jquery-rails'
-gem 'mixlib-log', '1.3.0'
+gem 'cabin', '0.4.4'
 gem 'yajl-ruby', '>= 1.1.0'
 
 gem 'spice'

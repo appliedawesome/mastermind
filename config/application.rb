@@ -21,6 +21,11 @@ module Mastermind
       g.fixture_replacement :factory_girl
       g.template_engine :slim
     end
+    
+    cabin = Cabin::Channel.new 
+    cabin.subscribe(STDOUT)
+    config.logger = cabin
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
