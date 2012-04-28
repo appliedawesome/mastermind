@@ -1,15 +1,7 @@
 class Job < ActiveRecord::Base
+  belongs_to :heist
   
-  include ActiveAttr::Model
-  include ActiveAttr::TypecastedAttributes
-
-  attribute :target, :type => Object # Target
-  attribute :action, :type => String
-  
-  def execute
-    target.send(action)
-  end
+  validates :name, :uniqueness => { :scope => :heist_id }, :presence => true
+  validates :target, :presence => true
+  validates :action, :presence => true
 end
-
-
-# job = Job.new(:target => @target)
