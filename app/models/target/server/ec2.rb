@@ -1,8 +1,6 @@
 require 'fog'
 
 class Target::Server::EC2 < Target
-  # default_action :create
-  
   attribute :aws_access_key_id, :type => String, :required => true
   attribute :aws_secret_access_key, :type => String, :required => true
   attribute :image_id, :type => String
@@ -46,8 +44,9 @@ class Target::Server::EC2 < Target
     )
   end
   
-  action :create, :needs => [:image_id, :flavor_id, :key_name, :availability_zone, :groups] do
-    Mastermind::Log.info "Creating EC2 server"
+  action :create, :needs => [ :image_id, :flavor_id, :key_name, 
+                              :availability_zone, :groups ] do
+    Rails.logger.info "Creating EC2 server"
     
     server = connection.servers.create(
       :image_id => image_id,
@@ -64,7 +63,7 @@ class Target::Server::EC2 < Target
   action :destroy, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.destroy
-    Mastermind::Log.info "Destroying EC2 server #{instance_id}"
+    Rails.logger.info "Destroying EC2 server #{instance_id}"
     server.wait_for { state == 'terminated' }
     attributes = server.attributes
   end
@@ -72,7 +71,7 @@ class Target::Server::EC2 < Target
   action :stop, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.stop
-    Mastermind::Log.info "Stopping EC2 server #{instance_id}"
+    Rails.logger.info "Stopping EC2 server #{instance_id}"
     server.wait_for { state == 'stopped' }
     attributes = server.attributes
   end
@@ -80,7 +79,7 @@ class Target::Server::EC2 < Target
   action :start, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.start
-    Mastermind::Log.info "Starting EC2 server #{instance_id}"
+    Rails.logger.info "Starting EC2 server #{instance_id}"
     server.wait_for { state == 'running' }
     attributes = server.attributes
   end
@@ -88,10 +87,10 @@ class Target::Server::EC2 < Target
   action :restart, :needs => :instance_id do
     server = connection.servers.get(instance_id)
     server.stop
-    Mastermind::Log.info "Stopping EC2 server #{instance_id}"
+    Rails.logger.info "Stopping EC2 server #{instance_id}"
     server.wait_for { state == 'stopped' }
     server.start
-    Mastermind::Log.info "Starting EC2 server #{instance_id}"
+    Rails.logger.info "Starting EC2 server #{instance_id}"
     server.wait_for { state == 'running' }
     attributes = server.attributes
   end  

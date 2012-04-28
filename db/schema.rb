@@ -15,20 +15,23 @@ ActiveRecord::Schema.define(:version => 20120428181207) do
 
   create_table "heists", :force => true do |t|
     t.string   "name"
+    t.text     "profile"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
 
   create_table "jobs", :force => true do |t|
     t.string   "name"
-    t.string   "target"
+    t.string   "target_name"
     t.string   "action"
+    t.text     "profile"
     t.integer  "heist_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   add_index "jobs", ["heist_id"], :name => "index_jobs_on_heist_id"
   add_index "jobs", ["name"], :name => "index_jobs_on_name"
+  add_index "jobs", ["target_name"], :name => "index_jobs_on_target_name"
 
 end

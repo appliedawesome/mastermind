@@ -7,7 +7,7 @@ module Mastermind::Config
   end
   
   def target(type, target_class)
-    Mastermind::HitList.targets[type] = target_class
+    ::HitList.targets[type] = target_class
     target_class.type type
   end
 end

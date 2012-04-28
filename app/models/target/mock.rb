@@ -1,11 +1,9 @@
-class Target::Mock < Target
-  # default_action :pass
-  
+class Target::Mock < Target  
   attribute :message, :type => String
   
   validates_presence_of :message
   
-  action :pass, :needs => [:message, :name] do
+  action :pass, :needs => :message do
     puts message
     true
   end
