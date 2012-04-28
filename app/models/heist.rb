@@ -6,15 +6,18 @@ class Heist < ActiveRecord::Base
   
   validates :name, :uniqueness => true, :presence => true
   
+  attr_accessor :pending_jobs, :completed_jobs
+  
   def pre
     
   end
   
-  def execute
+  def start
     
   end
   
   def post
     
   end
+  
 end

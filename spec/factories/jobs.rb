@@ -5,6 +5,7 @@ FactoryGirl.define do
     name { Forgery(:basic).text }
     target_name "mock"
     action "pass"
+    profile :message => "FOOOO"
     heist
   end
 end

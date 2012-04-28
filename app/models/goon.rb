@@ -16,16 +16,9 @@ class Goon
   
   # What to do after we execute a job
   def report
-    report_to_heist
-  end
-  
-  def initialize_target
-    target = Mastermind::HitList.targets[dossier[:target][:name]].new(dossier[:target])
-  end
-  
-  def report_to_heist
     
   end
+
 end
 
 # job = Job.new(...)
