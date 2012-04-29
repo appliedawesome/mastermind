@@ -1,0 +1,2 @@
+module HeistsHelper
+end
