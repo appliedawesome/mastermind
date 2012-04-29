@@ -89,10 +89,9 @@ class Target
     end
   end
   
-  # Fake the save process so FactoryGirl won't poop itself
+  # Fake the save! method so FactoryGirl won't poop itself
   def save!
     true
   end
-  
   
 end
