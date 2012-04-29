@@ -11,5 +11,4 @@ class Target::CM::Chef::Client < Target::CM::Chef
   action :delete do
     requires :name
   end
-  
 end
