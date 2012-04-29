@@ -1,7 +1,7 @@
 Mastermind::Config.setup do |config|
-  config.target :mock, Target::Mock
   
   # Register targets in the HitList
+  config.register_target :mock, Target::Mock
   config.register_target :ec2_server, Target::Server::EC2
   config.register_target :chef_client, Target::CM::Chef::Client
   
