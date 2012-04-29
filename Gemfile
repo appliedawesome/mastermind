@@ -27,11 +27,15 @@ end
 
 gem 'jquery-rails'
 
+group :test do
+  # gem 'cucumber-rails'
+end
+  
 group :test, :development do
   gem 'rspec-rails', '>= 2.8.1'
-  # gem 'cucumber-rails'
   gem 'factory_girl_rails', '>= 3.2.0'
-  gem 'shoulda-matchers', '>= 1.0.0'
+  gem 'shoulda'
+  # gem 'shoulda-matchers', '>= 1.0.0'
   gem 'capybara', '>= 1.1.2'
   gem 'rack-test', '>= 0.6.0', :require => 'rack/test'
   gem 'spork', '>= 1.0.0rc2'
