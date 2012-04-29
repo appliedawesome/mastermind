@@ -5,3 +5,8 @@
 require File.expand_path('../config/application', __FILE__)
 
 Mastermind::Application.load_tasks
+
+desc "start guard"
+task :guard do
+  sh "bundle exec guard start"
+end
