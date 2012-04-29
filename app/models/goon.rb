@@ -19,6 +19,11 @@ class Goon
     
   end
 
+  # Fake the save! method so FactoryGirl won't poop itself
+  def save!
+    true
+  end
+  
 end
 
 # job = Job.new(...)
