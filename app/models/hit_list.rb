@@ -1,4 +1,4 @@
-class HitList
+module HitList
   @targets = Hash.new.with_indifferent_access
 
   class << self

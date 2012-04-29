@@ -8,15 +8,24 @@ class Heist < ActiveRecord::Base
   
   attr_accessor :pending_jobs, :completed_jobs
   
-  def pre
+  def setup
+    @pending_jobs = []
+    @completed_jobs = []
     
+    jobs.each do |job|
+      pending_jobs << job
+    end
   end
   
-  def start
-    
+  def execute
+    setup
+    # while pending_jobs.pop do 
+    jobs.each do |job|
+    end
+    teardown
   end
   
-  def post
+  def teardown
     
   end
   
