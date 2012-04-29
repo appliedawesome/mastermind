@@ -14,7 +14,7 @@ FactoryGirl.define do
     target_name "mock"
     action "pass"
     profile :message => "{{job_message}}"
-    heist
+    association :heist, :factory => :heist_with_profile
   end
   
   factory :job_with_bad_heist_profile, :class => Job do
@@ -22,7 +22,7 @@ FactoryGirl.define do
     target_name "mock"
     action "pass"
     profile :message => "{{missing_message}}"
-    heist
+    association :heist, :factory => :heist_with_profile
   end
 end
   

@@ -3,7 +3,10 @@
 FactoryGirl.define do
   factory :heist do
     name { Forgery(:basic).text }
-    profile 'job_message' => "BAR!"
   end
   
+  factory :heist_with_profile, :class => Heist do
+    name { Forgery(:basic).text }
+    profile 'job_message' => "BAR!"
+  end
 end
