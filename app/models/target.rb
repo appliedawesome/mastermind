@@ -4,50 +4,42 @@ class Target
   
   self.include_root_in_json = false
 
-  def self.allowed_actions
-    @allowed_actions ||= [ :nothing ]
+  attribute :options, type: Object, default: {}
+  # attribute :required_attributes, type: Object, default: {}
+  
+  def self.required_attributes
+    @required_attributes ||= {}
   end
   
-  def self.from_hash(hash)
-    target = find_by_type(hash["type"] || hash[:type])
-    result = target.new(hash)
-    return result
-  end
-  
-  def self.from_json(json)
-    hash = Yajl.load(json)
-    target = find_by_type(hash["type"])
-    result = target.new(hash)
-    return result
-  end
-  
-  def self.find_by_type(type)
-    Mastermind::HitList.targets[type]
+  def required_attributes
+    self.class.required_attributes
   end
   
   def self.type(type=nil)
     @type = type.to_s if !type.nil?
-    attribute :type, :type => String, :default => @type
+    attribute :type, type: String, default: @type
     return @type
   end
   
-  def self.dsl_method(name, target, &block)
-    new_target = target.new
-    new_target.name name
-    new_target.action (new_target.action || new_target.default_action)
-    new_target.instance_eval(&block)
-    tasks << new_target
+  def self.allowed_actions
+    @allowed_actions ||= [ :nothing ]
   end
     
   def self.action(action_name, options={}, &block)
     action_name = action_name.to_sym
     allowed_actions.push(action_name) unless allowed_actions.include?(action_name)
-        
+    required_attributes[action_name] = [ options[:requires] ].flatten
+    
     define_method(action_name) do
+      requires required_attributes[action_name]
       # Rails.logger.debug "Executing #{action_name} for #{to_s}."
       instance_eval(&block)
-      self
+      # self
     end
+  end
+  
+  def self.required_attributes_for(action)
+    required_attributes[action]
   end
   
   def nothing
@@ -56,7 +48,8 @@ class Target
   end
   
   def requires(*args)
-    args = args.flatten
+    args.flatten!
+    
     args.each do |arg|
       unless attributes[arg] || self.send(arg)
         errors.add(arg, "can't be blank") 
@@ -69,6 +62,9 @@ class Target
   end
     
   def execute(action_to_execute)
+    # clear out any previously encountered errors
+    errors.clear
+    
     action_to_execute = action_to_execute.to_sym
     
     unless self.class.allowed_actions.include?(action_to_execute)
@@ -78,6 +74,7 @@ class Target
     begin
       self.send(action_to_execute)
     rescue => e
+      Rails.logger.error e.message, :backtrace => e.backtrace
       errors.add(:exception, e.message)
       return false
     end
