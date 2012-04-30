@@ -16,6 +16,7 @@ Spork.prefork do
     config.use_transactional_fixtures = false
     
     config.before(:suite) do
+      Fog.mock!
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
     end
@@ -26,6 +27,10 @@ Spork.prefork do
 
     config.after(:each) do
       DatabaseCleaner.clean
+    end
+    
+    config.after(:suite) do
+      Fog.unmock!
     end
   end
 end
