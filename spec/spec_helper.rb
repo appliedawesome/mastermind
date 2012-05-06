@@ -6,14 +6,25 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   require 'rspec/autorun'
-  require 'capybara/rspec'
+  require 'capybara/rails'
   require 'database_cleaner'
   # require 'shoulda/matchers'
+  
+  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
   
   RSpec.configure do |config|
     config.mock_with :rspec
     config.infer_base_class_for_anonymous_controllers = true
     config.use_transactional_fixtures = false
+    config.formatter = 'progress'
+    
+    config.include JsonSpec::Helpers, :type => :api
+    config.include Devise::TestHelpers, :type => :controller
+    config.extend ControllerMacros, :type => :controller
+    config.include RequestMacros, :type => :request
+    
+    config.include EmailSpec::Helpers 
+    config.include EmailSpec::Matchers
     
     config.before(:suite) do
       Fog.mock!

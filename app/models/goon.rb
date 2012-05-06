@@ -7,11 +7,20 @@ class Goon
   
   # What to do before we execute a job
   def setup
+    Rails.logger.debug "Setting up goon"
   end
   
   # How we execute a job
   def execute
-    job.execute
+    if job.execute
+      return true
+    else
+      return false
+    end
+  end
+  
+  def teardown
+    Rails.logger.debug "Tearing down goon"
   end
   
   # What to do after we execute a job

@@ -2,32 +2,49 @@ require 'spec_helper'
 
 describe HeistsController do
 
-  describe "GET 'index'" do
-    it "returns http success" do
-      get 'index'
-      response.should be_success
-    end
+  def mock_heist(stubs={})
+    @mock_heist ||= mock_model(Heist, stubs).as_null_object
   end
-
-  describe "GET 'show'" do
-    it "returns http success" do
-      get 'show'
-      response.should be_success
+  
+  describe "GET :index" do
+    let(:heist) { FactoryGirl.create(:heist) }
+    
+    before do
+      Heist.should_receive(:all).and_return([ heist ])
+      get :index, :format => :json
     end
+    
+    it { should respond_with(200) }
+    it { should assign_to(:heists) }
+    it { [ heist ].to_json.should be_json_eql(response.body) }
   end
-
-  describe "GET 'new'" do
-    it "returns http success" do
-      get 'new'
-      response.should be_success
-    end
-  end
-
-  describe "GET 'edit'" do
-    it "returns http success" do
-      get 'edit'
-      response.should be_success
-    end
-  end
+  
+  # 
+  # describe "GET :show'" do
+  #   let(:heist) { FactoryGirl.create(:heist) }
+  #   
+  #   before do
+  #     Heist.should_receive(:find).and_return(heist)
+  #     get :show, :id => heist.id 
+  #   end
+  #   
+  #   it { should respond_with(200) }
+  #   it { should assign_to(:heist).with_kind_of(Heist) }
+  #   it { response.body.should == { name: heist.name, profile: heist.profile }.to_json }
+  # end
+  # 
+  # describe 'POST :create' do
+  #   context 'valid account' do
+  #     let(:valid) { FactoryGirl.attributes_for(:heist).stringify_keys }
+  #     
+  #     before do
+  #       Heist.stub(:new).with(valid) { mock_heist(:save => true) }
+  #       post :create, :heist => valid
+  #     end
+  # 
+  #     it { should respond_with(201) }
+  #     it { should assign_to(:heist).with_kind_of(Heist) }
+  #   end
+  # end
 
 end

@@ -7,8 +7,27 @@ module Mastermind::Config
   end
   
   def register_target(type, target_class)
-    ::HitList.targets[type] = target_class
+    ::Mastermind::HitList.targets[type] = target_class
     target_class.type type
+  end
+  
+  def register_targets(targets)
+    raise ArgumentError unless targets.is_a?(Hash)
+    targets.each do |type, target_class|
+      register_target(type, target_class)
+    end
+  end
+  
+  def deregister_target(type)
+    ::Mastermind::HitList.targets[type] = nil
+  end
+  
+  def deregister_targets(*targets)
+    targets = targets.flatten!
+    raise ArgumentError unless targets && targets.is_an?(Array)
+    targets.each do |target|
+      deregister_target(target)
+    end
   end
     
   def chef

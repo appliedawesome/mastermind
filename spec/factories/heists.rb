@@ -5,8 +5,7 @@ FactoryGirl.define do
     name { Forgery(:basic).text }
   end
   
-  factory :heist_with_profile, :class => Heist do
-    name { Forgery(:basic).text }
+  factory :heist_with_profile, parent: :heist do
     profile 'job_message' => "BAR!"
   end
 end

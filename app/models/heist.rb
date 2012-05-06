@@ -9,24 +9,33 @@ class Heist < ActiveRecord::Base
   attr_accessor :pending_jobs, :completed_jobs
   
   def setup
-    @pending_jobs = []
-    @completed_jobs = []
-    
-    jobs.each do |job|
-      pending_jobs << job
-    end
+    Rails.logger.debug "Setting up heist"
+    # 
+    # @pending_jobs = []
+    # @completed_jobs = []
+    # 
+    # jobs.each do |job|
+    #   pending_jobs << job
+    # end
   end
   
   def execute
     setup
+    
     # while pending_jobs.pop do 
     jobs.each do |job|
+      goon = Goon.new(:heist => self, :job => job)
+      if goon.execute
+        next
+      else
+        return false
+      end
     end
     teardown
   end
   
   def teardown
-    
+    Rails.logger.debug "Tearing down heist"
   end
   
 end

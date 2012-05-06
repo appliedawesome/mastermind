@@ -4,7 +4,7 @@ class CreateJobs < ActiveRecord::Migration
       t.string :name
       t.string :target_name
       t.string :action
-      t.text :profile
+      t.text :profile, :default => {}.to_json
       
       t.references :heist
 
