@@ -1,12 +1,20 @@
 Mastermind::Application.routes.draw do
-  get "jobs/index"
+  authenticated :user do 
+    root :to => 'home#index'
+  end
+  
+  root :to => 'home#index'
+  
+  devise_for :users
+  
+  as :user do
+    get '/sign_in' => 'devise/sessions#new'
+    delete '/sign_out' => 'devise/sessions#destroy'
+    get '/sign_up' => 'devise/registrations#new'
+  end
 
-  get "jobs/show"
-
-  get "jobs/new"
-
-  get "jobs/edit"
-
+  # resources :users, :only => [ :show, :index ]
+  
   resources :heists do
     resources :jobs
   end
